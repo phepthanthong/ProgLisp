@@ -1,0 +1,152 @@
+; SLIME 2013-06-26
+CL-USER> *print-base*
+10
+CL-USER> (+ 2 3 4)
+9
+CL-USER> (+)
+0
+CL-USER> (*)
+1
+CL-USER> 123456
+123456
+CL-USER> 6/8
+3/4
+CL-USER> (+ 3 4)
+7
+CL-USER> (+ (* 3 4) (+ 4 9))
+25
+CL-USER> (length "fhdfkjshkj")
+10
+CL-USER> (length '(3 5 7 1))
+4
+CL-USER> (if (> 4 5)
+	     "oui"
+	     "non")
+"non"
+CL-USER> (floor 10.70)
+10
+0.6999998
+CL-USER> (floor 10.7)
+10
+0.6999998
+CL-USER> (floor 3.4)
+3
+0.4000001
+CL-USER> (floor 7.15)
+7
+0.1500001
+CL-USER> (+10 (floor 7.15))
+; in: 10 (FLOOR 7.15)
+;     (10 (FLOOR 7.15))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; Evaluation aborted on #<SB-INT:COMPILED-PROGRAM-ERROR {1005CF1313}>.
+CL-USER> (+10 (floor 11 4))
+; in: 10 (FLOOR 11 4)
+;     (10 (FLOOR 11 4))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; Evaluation aborted on #<SB-INT:COMPILED-PROGRAM-ERROR {1005E89893}>.
+CL-USER> (+ 10 (floor 11 4))
+; compiling (DEFUN DOUBLER ...)
+; compiling (DEFUN DOUBLER ...)12
+CL-USER> (doubler 2)
+
+4
+CL-USER> (doubler 0)
+0
+CL-USER> (cube 3)
+
+; in: CUBE 3
+;     (CUBE 3)
+; 
+; caught STYLE-WARNING:
+;   undefined function: CUBE
+; 
+; compilation unit finished
+;   Undefined function:
+;     CUBE
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN CUBE ...); Evaluation aborted on #<UNDEFINED-FUNCTION CUBE {10063000A3}>.
+CL-USER> (cube 3)
+
+; compiling (DEFUN CUBE ...)
+
+; file: /tmp/fileqq8ltA
+; in: DEFUN CUBE
+;     (CARRE (X))
+; 
+; caught STYLE-WARNING:
+;   undefined function: CARRE
+
+;     (X)
+; 
+; caught STYLE-WARNING:
+;   undefined function: X
+; 
+; compilation unit finished
+;   Undefined functions:
+;     CARRE X
+;   caught 2 STYLE-WARNING conditions
+27
+CL-USER> (cube 3)
+; compiling (DEFUN CUBE ...)
+; compiling (DEFUN PGCD ...); Evaluation aborted on #<UNDEFINED-FUNCTION X {10065C17D3}>.
+CL-USER> (pgcd 17 24)
+
+1
+CL-USER> (pgcd 5 5)
+5
+CL-USER> (pgcd 6 18)
+; compiling (DEFUN PGCD ...)6
+CL-USER> (trace pgcd 6 18)
+
+WARNING: 6 is not a valid function name, not tracing.
+WARNING: 18 is not a valid function name, not tracing.
+(PGCD)
+CL-USER> (trace (pgcd 6 18))
+WARNING: (PGCD 6 18) is not a valid function name, not tracing.
+NIL
+CL-USER> (trace pgcd)
+WARNING: PGCD is already TRACE'd, untracing it first.
+(PGCD)
+CL-USER> (pgcd 6 18)
+  0: (PGCD 6 18)
+    1: (PGCD 6 12)
+      2: (PGCD 6 6)
+      2: PGCD returned 6
+    1: PGCD returned 6
+  0: PGCD returned 6
+6
+CL-USER> (defvar *x* 20)
+*X*
+CL-USER> *x*
+20
+CL-USER> (setq *x* 10)
+10
+CL-USER> *x8
+; Evaluation aborted on #<UNBOUND-VARIABLE *X8 {1003181423}>.
+CL-USER> *x*
+10
+CL-USER> (+ (print 3) 4)
+
+3 
+7
+CL-USER> (print 3)
+
+3 
+3
+CL-USER> (documentation 'pgcd 'function)
+; compiling (DEFUN PGCD ...)NIL
+CL-USER> (documentation 'pgcd 'function)
+
+"pgcd de 2 entiers"
+CL-USER> 

@@ -1,0 +1,104 @@
+; SLIME 2013-06-26
+CL-USER> ; compiling (DEFUN RIOTA ...)
+CL-USER> (riota 10)
+
+(10 9 8 7 6 5 4 3 2 1)
+CL-USER> (atom 4)
+T
+CL-USER> (consp 4)
+NIL
+CL-USER> (atom '(1 2))
+NIL
+CL-USER> (consp '(1 2))
+T
+CL-USER> (consp '())
+NIL
+CL-USER> (atom '())
+T
+CL-USER> (integerp 12.2)
+NIL
+CL-USER> (numberp 12.2)
+T
+CL-USER> (stringp 'rouge)
+NIL
+CL-USER> (stringp "rouge")
+T
+CL-USER> '(1 2 3 4 5 6)
+(1 2 3 4 5 6)
+CL-USER> (defparameter *l* '(1 2 3 4 5 6))
+*L*
+CL-USER> (butlast *l*)
+(1 2 3 4 5)
+CL-USER> (butlast *l* 3)
+(1 2 3)
+CL-USER> (butlast *l* 2)
+(1 2 3 4)
+CL-USER> (subst 70 3 *l*)
+(1 2 70 4 5 6)
+CL-USER> (adjoin 2 '())
+(2)
+CL-USER> (defparameter *l1* (riota 4))
+*L1*
+CL-USER> (union *l* *l1*)
+(6 5 4 3 2 1)
+CL-USER> (member 3 *l*)
+(3 4 5 6)
+CL-USER> (member -4 '((4 . 6) (7 . 2) (5 . 6) (3 . 5)))
+NIL
+CL-USER> (member -4 '((4 . 6) (7 . 2) (5 . 6) (3 . 5)) :key #'cdr)
+NIL
+CL-USER> (member -4 '((4 . 6) (7 . 2) (5 . -4) (3 . 5)) :key #'cdr)
+((5 . -4) (3 . 5))
+CL-USER> (nth 0 *l*)
+1
+CL-USER> *l*
+(1 2 3 4 5 6)
+CL-USER> (remove 5 *l*)
+(1 2 3 4 6)
+CL-USER> (remove 5 (append *l* *l*))
+(1 2 3 4 6 1 2 3 4 6)
+CL-USER> (remove-duplicates (append *l* *l*))
+(1 2 3 4 5 6)
+CL-USER> (fact 4)
+
+; in: FACT 4
+;     (FACT 4)
+; 
+; caught STYLE-WARNING:
+;   undefined function: FACT
+; 
+; compilation unit finished
+;   Undefined function:
+;     FACT
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN FACT ...)
+
+; file: /tmp/fileKWHXMi
+; in: DEFUN FACT
+;     (* N (FACT (1- N)))
+; ==>
+;   N
+; 
+; note: deleting unreachable code
+; 
+; compilation unit finished
+;   printed 1 note
+; compiling (DEFUN FACT ...)
+
+; file: /tmp/fileyP7Slp
+; in: DEFUN FACT
+;     (* N (FACT (1- N)))
+; ==>
+;   N
+; 
+; note: deleting unreachable code
+; 
+; compilation unit finished
+;   printed 1 note
+; compiling (DEFUN FACT ...); Evaluation aborted on #<UNDEFINED-FUNCTION FACT {1003B6B113}>.
+CL-USER> (fact 150)
+
+; compiling (DEFUN FACT ...)
+; compiling (DEFUN FACT ...)57133839564458545904789328652610540031895535786011264182548375833179829124845398393126574488675311145377107878746854204162666250198684504466355949195922066574942592095735778929325357290444962472405416790722118445437122269675520000000000000000000000000000000000000
+CL-USER> 
+CL-USER> 
