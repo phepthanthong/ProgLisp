@@ -1,0 +1,236 @@
+; SLIME 2013-06-26
+CL-USER> (defparameter *al* '((blue . bleu) (red . rouge)))
+*AL*
+CL-USER> *al*
+((BLUE . BLEU) (RED . ROUGE))
+CL-USER> (cons '(green . vert) *al*)
+((GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (cons (cons 'green 'vert) *al*)
+((GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *al*
+((BLUE . BLEU) (RED . ROUGE))
+CL-USER> (setq *al* (cons '(green . vert) *al))
+; Evaluation aborted on #<UNBOUND-VARIABLE *AL {1004E0C713}>.
+CL-USER> (setq *al* (cons '(green . vert) *al*))
+((GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *al*
+((GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (acons 'yellow 'jaune *al*)
+((YELLOW . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *al*
+((GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (setq *al* (acons 'yellow 'jaune *al*))
+((YELLOW . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *al*
+((YELLOW . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (assoc 'red *al*)
+(RED . ROUGE)
+CL-USER> (cdr (assoc 'red *al*))
+ROUGE
+CL-USER> (assoc 'pink *al*)
+NIL
+CL-USER> (defparameter *chiffres* '(("un" . 1) ("deux" . 2) ("trois" . 3)))
+*CHIFFRES*
+CL-USER> (assoc-if (lambda (k) (= (length k) 4)) *chiffres*)
+("deux" . 2)
+CL-USER> (assoc-if (lambda (k) (= (length k) 5)) *chiffres*)
+("trois" . 3)
+CL-USER> (assoc-if (lambda (k) (= (length k) 2)) *chiffres*)
+("un" . 1)
+CL-USER> (rassoc-if (lambda (v) (= 3 v)) *chiffres*)
+("trois" . 3)
+CL-USER> (assoc-if-not (lambda (k) (= (length k) 2)) *chiffres*)
+("deux" . 2)
+CL-USER> (defparameter *l* (copy-list *chiffres*))
+*L*
+CL-USER> *al*
+((YELLOW . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (defparameter *copy-al* (copy-list *al*))
+*COPY-AL*
+CL-USER> (setf (caar *al*) 'grun)
+GRUN
+CL-USER> *al*
+((GRUN . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (defparameter *copy* (copy-alist *al*))
+*COPY*
+CL-USER> *al*
+((GRUN . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *copy*
+((GRUN . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (setf (cdr (car *al*)) 'vert)
+VERT
+CL-USER> *al*
+((GRUN . VERT) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> *copy*
+((GRUN . JAUNE) (GREEN . VERT) (BLUE . BLEU) (RED . ROUGE))
+CL-USER> (pairlis '(k1 k2 k3 k4) '(v1 v2 v3 v4))
+((K4 . V4) (K3 . V3) (K2 . V2) (K1 . V1))
+CL-USER> (format t "(~A, ~A)" 3 4)
+(3, 4)
+NIL
+CL-USER> (format t "(i = ~A)" 4)
+(i = 4)
+NIL
+CL-USER> (format t "(i = ~A ~%)" 4)
+(i = 4 
+)
+NIL
+CL-USER> (format t "(i = ~A)~%" 4)
+(i = 4)
+NIL
+CL-USER> (defparameter *l* '(1 2 3 4))
+*L*
+CL-USER> (cdr *l*)
+(2 3 4)
+CL-USER> (cdr l)
+; Evaluation aborted on #<UNBOUND-VARIABLE L {10070C1733}>.
+CL-USER> *l*
+(1 2 3 4)
+CL-USER> (setq *l* (cdr *l*))
+(2 3 4)
+CL-USER> *l*
+(2 3 4)
+CL-USER> (pop *l*)
+2
+CL-USER> *l*
+(3 4)
+CL-USER> (pop *l*)
+3
+CL-USER> (pop *l*)
+4
+CL-USER> (pop *l*)
+NIL
+CL-USER> (defparameter *l* '(a b c d))
+; compiling (DEFUN F ...)*L*
+CL-USER> (f *l*)
+0:A 1:B 2:C 3:D 
+NIL
+CL-USER> (f *l*)
+0:A 1:B 2:C 3:D 
+; compiling (DEFUN F ...)NIL
+CL-USER> (f *l*)
+i = 0 : A
+ i = 1 : B
+ i = 2 : C
+ i = 3 : D
+ 
+; compiling (DEFUN F ...)NIL
+CL-USER> (f *l*)
+i = 0 : A
+i = 1 : B
+i = 2 : C
+i = 3 : D
+; compiling (DEFUN G ...)NIL
+CL-USER> (g 1 2)
+
+; compiling (DEFUN G ...)(1 2 NIL NIL)
+CL-USER> (g 1 2)
+
+; compiling (DEFUN H ...)(1 2 NIL 2)
+CL-USER> (h 1 2 3 5)
+
+; compiling (DEFUN K ...)(1 (2 3 5))
+CL-USER> (k)
+
+(NIL NIL NIL NIL)
+CL-USER> (k :image 'nuage)
+; compiling (DEFUN FACT ...)(NIL NUAGE NIL NIL)
+CL-USER> (fact 4)
+
+24
+CL-USER> (fact -1)
+; Evaluation aborted on #<SIMPLE-ERROR "~@<The assertion ~S failed~:[.~:; ~
+                                    with ~:*~{~{~S = ~S~}~^, ~}.~]~:@>" {1005A66E33}>.
+CL-USER> (make-list 10)
+; compiling (DEFUN ZEROS ...)(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)
+CL-USER> (setf *v1* 1 *v2* 2)
+
+; in: SETF *V1*
+;     (SETF *V1* 1)
+; ==>
+;   (SETQ *V1* 1)
+; 
+; caught WARNING:
+;   undefined variable: *V1*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *V1*
+;   caught 1 WARNING condition
+
+;     (SETF *V2* 2)
+; ==>
+;   (SETQ *V2* 2)
+; 
+; caught WARNING:
+;   undefined variable: *V2*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *V2*
+;   caught 1 WARNING condition
+2
+CL-USER> (defvar *v1*)
+*V1*
+CL-USER> (defvar *v2*)
+*V2*
+CL-USER> (setf *v1* 1 *v2* 2)
+2
+CL-USER> *v2*
+2
+CL-USER> (pushnew 0 *l* ) ;; (setq *l* (adjoin 0 *l*))
+; compiling (DEFUN LEAVES ...)
+
+; file: /tmp/fileeOs7Kn
+; in: DEFUN LEAVES
+;     ((LEAVES (CAR TREE) (CDR TREE)))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN LEAVES ...)
+
+; file: /tmp/fileKXHUb0
+; in: DEFUN LEAVES
+;     ((LEAVES (CAR TREE) (LEAVES (CDR TREE))))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN LEAVES ...)
+
+; file: /tmp/fileOu5d73
+; in: DEFUN LEAVES
+;     ((LEAVES (CAR TREE)) (LEAVES (CDR TREE)))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN LEAVES ...)
+
+; file: /tmp/fileX8eQBl
+; in: DEFUN LEAVES
+;     ((LEAVES (CAR TREE)) (LEAVES (CDR TREE)))
+; 
+; caught ERROR:
+;   illegal function call
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN LEAVES ...)(0 A B C D)
+CL-USER> (defparameter *tree* (cons (cons (cons 1 2) 3) (cons (cons 4 5) (cons 6 7))))
+
+*TREE*
+CL-USER> (leaves 3)
+(3)
+CL-USER> (leaves '(1 2 5 7))
+(1 2 5 7 NIL)
+CL-USER> (leaves *tree*)
+; compiling (DEFUN LEAVES2 ...)(1 2 3 4 5 6 7)
+CL-USER> 

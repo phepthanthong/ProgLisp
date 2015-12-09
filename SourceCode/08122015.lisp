@@ -106,6 +106,11 @@ tester si une liste est vide: (endp l)
 		 (aux (cdr l) (+1 s))))
 	   (aux l 0))))
 
+(defun iota-aux (n l)
+  (if zerop n)
+  l
+  (iota-aux (1- n) (cons (1- n) l)))
+
 (defun iota (n)
   (reverse (riota n)))
 (defun iota-q (n) ;; (append l (list e))
