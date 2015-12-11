@@ -1,0 +1,795 @@
+; SLIME 2013-06-26
+CL-USER> (defparameter *x* 0)
+*X*
+CL-USER> (incf *x*)
+1
+CL-USER> (incf *x* 10)
+; compiling (DEFUN LEAVES2 ...)
+; compiling (DEFUN LEAVES2 ...)11
+CL-USER> *x*
+
+11
+CL-USER> (decf *x*) ;; (setq *x* (1- *x*))
+10
+CL-USER> (decf *x* 5) ;; (setq *x* (- *x* 5))
+5
+CL-USER> (defparameter *tree* (cons (cons 1 2) (cons 3 (cons 4 (cons 5 6)))))
+*TREE*
+CL-USER> *tree*
+((1 . 2) 3 4 5 . 6)
+CL-USER> (leaves *tree*)
+
+; in: LEAVES *TREE*
+;     (LEAVES *TREE*)
+; 
+; caught STYLE-WARNING:
+;   undefined function: LEAVES
+; 
+; compilation unit finished
+;   Undefined function:
+;     LEAVES
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION LEAVES {1005019DF3}>.
+CL-USER> (leaves2 *tree*)
+; compiling (DEFUN LEAVES ...)
+; compiling (DEFUN LEAVES2 ...)(6 5 4 3 2 1)
+CL-USER> (time (leaves *tree*))
+
+Evaluation took:
+  0.000 seconds of real time
+  0.000093 seconds of total run time (0.000081 user, 0.000012 system)
+  100.00% CPU
+  56,825 processor cycles
+  0 bytes consed
+  
+(1 2 3 4 5 6)
+CL-USER> (time (leaves2 *tree*))
+Evaluation took:
+  0.000 seconds of real time
+  0.000057 seconds of total run time (0.000050 user, 0.000007 system)
+  100.00% CPU
+  36,041 processor cycles
+  0 bytes consed
+  
+(6 5 4 3 2 1)
+CL-USER> (typep 20.3)
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "invalid number of arguments: ~S" {10067C91F3}>.
+CL-USER> (type-of 20.3)
+SINGLE-FLOAT
+CL-USER> (typep 20 'fixnum)
+T
+CL-USER> (ash 1 60)
+1152921504606846976
+CL-USER> (typep (ash 1 60) 'fixnum)
+T
+CL-USER> (typep (ash 1 6) 'fixnum)
+T
+CL-USER> (typep (ash 1 62) 'fixnum)
+NIL
+CL-USER> (eq (ash 2 61) (ash 2 61))
+NIL
+CL-USER> (= (ash 2 61) (ash 2 61))
+T
+CL-USER> 12.5d0
+12.5d0
+CL-USER> 1.3d-1
+0.13d0
+CL-USER> (make-array 10)
+#(0 0 0 0 0 0 0 0 0 0)
+CL-USER> (type-of (make-array 10))
+(SIMPLE-VECTOR 10)
+CL-USER> (make-array (list 3 4))
+#2A((0 0 0 0) (0 0 0 0) (0 0 0 0))
+CL-USER> (make-array (list 3 4 2))
+#3A(((0 0) (0 0) (0 0) (0 0))
+    ((0 0) (0 0) (0 0) (0 0))
+    ((0 0) (0 0) (0 0) (0 0)))
+CL-USER> (make-array (list 3 4 2) :element-type 'bit)
+#3A(((0 0) (0 0) (0 0) (0 0))
+    ((0 0) (0 0) (0 0) (0 0))
+    ((0 0) (0 0) (0 0) (0 0)))
+CL-USER> (make-array (list 3 4 2) :initial-element 4)
+#3A(((4 4) (4 4) (4 4) (4 4))
+    ((4 4) (4 4) (4 4) (4 4))
+    ((4 4) (4 4) (4 4) (4 4)))
+CL-USER> (make-array (list 2 2) :initial-contents'((1 2) (3 4)))
+		     
+#2A((1 2) (3 4))
+CL-USER> (defparameter *t* (make-array (list 2 3)))
+		     
+*T*
+CL-USER> *t*
+#2A((0 0 0) (0 0 0))
+CL-USER> (aref *t* 1 2)
+0
+CL-USER> (aref *t* 1 3)
+; Evaluation aborted on #<SB-INT:INVALID-ARRAY-INDEX-ERROR expected-type: (INTEGER 0 (3)) datum: 3>.
+CL-USER> (setf (aref *t* 1 2) 4)
+4
+CL-USER> *t*
+#2A((0 0 0) (0 0 4))
+CL-USER> (aref *t* 1 2)
+4
+CL-USER> (length (make-array 10))
+10
+CL-USER> (count 0 (make-array 10))
+10
+CL-USER> (count 1 (make-array 10))
+0
+CL-USER> (multiple-value-bind (x y) (floor 10.3))
+; in: MULTIPLE-VALUE-BIND (X Y)
+;     #'(LAMBDA (&OPTIONAL (X) (Y) &REST #:G1338) (DECLARE (IGNORE #:G1338)))
+; 
+; caught STYLE-WARNING:
+;   The variable X is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable Y is defined but never used.
+; 
+; compilation unit finished
+;   caught 2 STYLE-WARNING conditions
+NIL
+CL-USER> (multiple-value-bind (x y) (floor 10.3) (print x) (print y) (list x y))
+
+10 
+0.3000002 
+(10 0.3000002)
+CL-USER> (values 1 2 3)
+1
+2
+3
+CL-USER> (multiple-value-list (values 1 2 3 4))
+(1 2 3 4)
+CL-USER> (multiple-value-cal #'+ (values 1 2 3 4))
+
+; in: MULTIPLE-VALUE-CAL #'+
+;     (MULTIPLE-VALUE-CAL #'+ (VALUES 1 2 3 4))
+; 
+; caught STYLE-WARNING:
+;   undefined function: MULTIPLE-VALUE-CAL
+; 
+; compilation unit finished
+;   Undefined function:
+;     MULTIPLE-VALUE-CAL
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION MULTIPLE-VALUE-CAL {1005CBEF53}>.
+CL-USER> (multiple-value-call #'+ (values 1 2 3 4))
+10
+CL-USER> (defparameter *dico* (make-hash-table :test #'eq))
+*DICO*
+CL-USER> *dico*
+#<HASH-TABLE :TEST EQ :COUNT 0 {1006835DB3}>
+CL-USER> (gethash 'weight *dico*)
+NIL
+NIL
+CL-USER> (setf (gethash 'weight *dico*) 100)
+100
+CL-USER> *dico*
+#<HASH-TABLE :TEST EQ :COUNT 1 {1006835DB3}>
+CL-USER> (gethash 'weight *dico*)
+100
+T
+CL-USER> (setf (gethash 'color *dico*) 'blue)
+BLUE
+CL-USER> (setf (gethash 'color *dico*) 'size)
+SIZE
+CL-USER> *dico*
+#<HASH-TABLE :TEST EQ :COUNT 2 {1006835DB3}>
+CL-USER> (gethas 'size *dico*)
+
+; in: GETHAS 'SIZE
+;     (GETHAS 'SIZE *DICO*)
+; 
+; caught STYLE-WARNING:
+;   undefined function: GETHAS
+; 
+; compilation unit finished
+;   Undefined function:
+;     GETHAS
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION GETHAS {1006E655D3}>.
+CL-USER> (gethash 'size *dico*)
+NIL
+NIL
+CL-USER> (setf (gethash 'color *dico*) 4)
+4
+CL-USER> (gethash 'size *dico*)
+NIL
+NIL
+CL-USER> (gethash 'color *dico*)
+4
+T
+CL-USER> (setf (gethash 'prop *dico*) '())
+NIL
+CL-USER> (gethash 'prop *dico*)
+NIL
+T
+CL-USER> (multiple-value-bind (value found) (gethash 'prop *dico*)
+	   (if found
+	       (format t "the value is ~A~%" value)
+	       (format t "not found")))
+the value is NIL
+NIL
+CL-USER> (multiple-value-bind (value found) (gethash 'prop1 *dico*)
+	   (if found
+	       (format t "the value is ~A~%" value)
+	       (format t "not found")))
+not found
+NIL
+CL-USER> (maphash
+	  (lambda (k v)
+	    (format t "Key:~A Value:~A~%" v))
+	  *dico*)
+; 
+; caught WARNING:
+;   Too few arguments (1) to FORMAT "Key:~A Value:~A~%": requires at least 2.
+;   See also:
+;     The ANSI Standard, Section 22.3.10.2
+
+; in: MAPHASH (LAMBDA (K V) (FORMAT T "Key:~A Value:~A~%" V))
+;     (LAMBDA (K V) (FORMAT T "Key:~A Value:~A~%" V))
+; 
+; caught STYLE-WARNING:
+;   The variable K is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<SB-FORMAT:FORMAT-ERROR {1002ECF563}>.
+CL-USER> (maphash
+	  (lambda (k v)
+	    (format t "Value:~A~%" v))
+	  *dico*)
+
+CL-USER> (maphash
+	  (lambda (k v)
+	    (format t "Value:~A~%" v))
+	  *dico*)
+
+CL-USER> (maphash
+	  (lambda (k v)
+	    (format t "Value:~A~%" v))
+	  *dico*)
+
+CL-USER> (maphash
+	  (lambda (k v)
+	    (format t "Value:~A~%" v))
+	  *dico*)
+
+CL-USER> (maphash
+	  (lambda (k v)
+	    (declare (ignore k))
+	    (format t "Value:~A~%" v))
+	  *dico*)
+
+Value:100
+Value:4
+Value:NIL
+NIL
+CL-USER> (let (keys '()))
+
+CL-USER> (let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push keys k)
+	      *dico*)))
+
+CL-USER> (let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push k keys)
+	      *dico*)))
+; in: LET (KEYS 'NIL)
+;     (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*))
+; 
+; caught WARNING:
+;   The function was called with one argument, but wants exactly two.
+
+;     (LET (KEYS (QUOTE NIL))
+;       (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*)))
+; 
+; caught STYLE-WARNING:
+;   The variable QUOTE is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "invalid number of arguments: ~S" {1003B72213}>.
+(let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push k keys)
+	      *dico*)))CL-USER> 
+; No value
+CL-USER> (let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push k keys)
+	      *dico*)))
+; in: LET (KEYS 'NIL)
+;     (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*))
+; 
+; caught WARNING:
+;   The function was called with one argument, but wants exactly two.
+
+;     (LET (KEYS (QUOTE NIL))
+;       (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*)))
+; 
+; caught STYLE-WARNING:
+;   The variable QUOTE is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "invalid number of arguments: ~S" {1003D231D3}>.
+CL-USER> (let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push k keys)
+	      *dico*)
+	    keys))
+; in: LET (KEYS 'NIL)
+;     (LET (KEYS (QUOTE NIL))
+;       (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*) KEYS))
+; 
+; caught STYLE-WARNING:
+;   The variable QUOTE is defined but never used.
+
+;     (MAPHASH (LAMBDA (K V) (DECLARE (IGNORE V)) (PUSH K KEYS) *DICO*) KEYS)
+; 
+; caught WARNING:
+;   Derived type of KEYS is
+;     (VALUES LIST &OPTIONAL),
+;   conflicting with its asserted type
+;     HASH-TABLE.
+;   See also:
+;     The SBCL Manual, Node "Handling of Types"
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<SIMPLE-TYPE-ERROR expected-type: HASH-TABLE datum: NIL>.
+CL-USER> (let (keys '())
+	   (maphash
+	    (lambda (k v)
+	      (declare (ignore v))
+	      (push k keys))
+	      *dico*)
+	    keys)
+CL-USER> (list-key *dico*)
+
+; compiling (DEFUN LIST-VALUE ...)(PROP COLOR WEIGHT)
+CL-USER> (list-value *dico*)
+
+(NIL 4 100)
+CL-USER> (remhash 'color *dico*)
+T
+CL-USER> *dico*
+#<HASH-TABLE :TEST EQ :COUNT 2 {10071A96C3}>
+CL-USER> (multiple-value-bind (value found) (gethash 'prop1 *dico*)
+	   (when found
+	       (format t "the value is ~A~%" value)))
+NIL
+CL-USER> (multiple-value-bind (value found) (gethash 'weight *dico*)
+	   (when found
+	       (format t "the value is ~A~%" value)))
+the value is 100
+; compiling (DEFUN PRINT-COUPLE ...)NIL
+CL-USER> (print-couple '(2 3) t)
+[2,3]
+NIL
+CL-USER> (print-couples '((2 3) (1 2) (3 2)) t)
+
+; in: PRINT-COUPLES '((2 3) (1 2) (3 2))
+;     (PRINT-COUPLES '((2 3) (1 2) (3 2)) T)
+; 
+; caught STYLE-WARNING:
+;   undefined function: PRINT-COUPLES
+; 
+; compilation unit finished
+;   Undefined function:
+;     PRINT-COUPLES
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN PRINT-COUPLES ...); Evaluation aborted on #<UNDEFINED-FUNCTION PRINT-COUPLES {1006A3FC23}>.
+CL-USER> (print-couples '((2 3) (1 2) (3 2)) t)
+
+
+CL-USER> (loop
+	      for i from 1 to 10
+	      collect i)
+
+(1 2 3 4 5 6 7 8 9 10)
+CL-USER> (loop
+	      for i from 1 to 10
+	      when (evenp i)
+	      collect i)
+(2 4 6 8 10)
+CL-USER> (do ()
+	     (t)
+	   )
+NIL
+CL-USER> (do ((i 0 (1+ i)))
+	     ((>- i 10))
+	   (print i))
+
+; in: DO ((I 0 (1+ I)))
+;     (>- I 10)
+; 
+; caught STYLE-WARNING:
+;   undefined function: >-
+; 
+; compilation unit finished
+;   Undefined function:
+;     >-
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION >- {1002DE6A43}>.
+CL-USER> (do ((i 0 (1+ i)))
+	     ((>= i 10))
+	   (print i))
+
+0 
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+NIL
+CL-USER> (read-line)
+hihi
+"hihi"
+NIL
+CL-USER> (parse-integer "1234")
+1234
+4
+CL-USER> (parse-integer "1234  d" :junk-allowed)
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "odd number of &KEY arguments" {10031CD1B3}>.
+CL-USER> (parse-integer "1234  d" :junk-allowed t)
+1234
+4
+CL-USER> (parse-integer (read-line) :junk-allowed t)
+kjhgf
+NIL
+0
+CL-USER> (do ((n nil))
+	     (n n)
+	   (setq n (parse-integer 9read-line :junk-allowed t)))
+
+; in: DO ((N NIL))
+;     (PARSE-INTEGER 9READ-LINE :JUNK-ALLOWED T)
+; 
+; caught WARNING:
+;   undefined variable: 9READ-LINE
+; 
+; compilation unit finished
+;   Undefined variable:
+;     9READ-LINE
+;   caught 1 WARNING condition
+; Evaluation aborted on #<UNBOUND-VARIABLE 9READ-LINE {1003660993}>.
+CL-USER> (do ((n nil))
+	     (n n)
+	   (setq n (parse-integer (read-line) :junk-allowed t)))
+123456
+123456
+CL-USER> (do ((n nil))
+	     (n n)
+	   (format t "Number? ")
+	   (setq n (parse-integer (read-line) :junk-allowed t)))
+Number? 3456
+
+3456
+CL-USER> (do ((n nil (parse-integer (read-line) :junk-allowed t)))
+	     (n n)
+	   (format t "Number? "))
+Number? 23
+
+23
+CL-USER> (do ((i 0 (1+ i)) ;; affectation parallele
+	      (l '() (cons i l)))
+	     ((>= i 10)))
+NIL
+CL-USER> (do ((i 0 (1+ i)) ;; affectation parallele
+	      (l '() (cons i l)))
+	     ((>= i 10) l))
+(9 8 7 6 5 4 3 2 1 0)
+CL-USER> (do* ((i 0 (1+ i)) ;; affectation sequentielle
+	      (l '() (cons i l)))
+	     ((>= i 10) l))
+(10 9 8 7 6 5 4 3 2 1)
+CL-USER> (dolist (e '(1 2 3 4))
+	   (print e))
+
+1 
+2 
+3 
+4 
+NIL
+CL-USER> (dolist (e '(1 2 3 4) 'bye)
+	   (print e))
+
+1 
+2 
+3 
+4 
+BYE
+CL-USER> (dolist (e '(1 2 3 4) 'bye)
+	   (prin1 e))
+
+
+CL-USER> (dolist (e '(1 2 3 4) 'bye)
+	   (prin1 e))
+1234
+BYE
+CL-USER> (dotimes (i 10)
+	   (print (1+ i))
+	   )
+
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+10 
+NIL
+CL-USER> (dotimes (i 10)
+	   (prin1 (1+ i)) ;; afficher dans une meme ligne
+	   )
+12345678910
+NIL
+CL-USER> (do ((i l (1+ i))
+	      (l '(a b c d e) (cdr l))
+	      (ll '() (cons (cons i (car l)) ll)))
+	     ((or (> i 4) (endp l)) ll))
+
+; in:
+;      DO ((I L (1+ I)) (L '(A B C D E) (CDR L)) (LL 'NIL (CONS (CONS I (CAR L)) LL)))
+;     (LET ((I L) (L '(A B C D E)) (LL 'NIL))
+;       (TAGBODY
+;         (GO #:G1405)
+;        #:G1404
+;         (TAGBODY)
+;         (PSETQ I (1+ I)
+;                L (CDR L)
+;                LL (CONS # LL))
+;        #:G1405
+;         (UNLESS (OR (> I 4) (ENDP L)) (GO #:G1404))
+;         (RETURN-FROM NIL (PROGN LL))))
+; 
+; caught WARNING:
+;   undefined variable: L
+; 
+; compilation unit finished
+;   Undefined variable:
+;     L
+;   caught 1 WARNING condition
+; Evaluation aborted on #<UNBOUND-VARIABLE L {1005CFFEF3}>.
+CL-USER> (do ((i l (1+ i))
+	      (l '(a b c d e) (cdr l))
+	      (ll '() (cons (cons i (car l)) ll)))
+	     ((or (> i 4) (endp l)) ll))
+
+
+CL-USER> (do ((i l (1+ i))
+	      (l '(a b c d e) (cdr l))
+	      (ll '() (cons (cons i (car l)) ll)))
+	     ((or (> i 4) (endp l)) ll))
+
+;     (LET ((I L) (L '(A B C D E)) (LL 'NIL))
+;       (TAGBODY
+;         (GO #:G1409)
+;        #:G1408
+;         (TAGBODY)
+;         (PSETQ I (1+ I)
+;                L (CDR L)
+;                LL (CONS # LL))
+;        #:G1409
+;         (UNLESS (OR (> I 4) (ENDP L)) (GO #:G1408))
+;         (RETURN-FROM NIL (PROGN LL))))
+; 
+; caught WARNING:
+;   undefined variable: L
+; 
+; compilation unit finished
+;   Undefined variable:
+;     L
+;   caught 1 WARNING condition
+; Evaluation aborted on #<UNBOUND-VARIABLE L {10060AE2E3}>.
+CL-USER> (do ((i 1 (1+ i))
+	      (l '(a b c d e) (cdr l))
+	      (ll '() (cons (cons i (car l)) ll)))
+	     ((or (> i 4) (endp l)) ll))
+((4 . D) (3 . C) (2 . B) (1 . A))
+CL-USER> (do ((i 1 (1+ i))
+	      (l '(a b c d e) (cdr l))
+	      (ll '() (cons (cons i (car l)) ll)))
+	     ((or (> i 5) (endp l)) (nreverse ll)))
+((1 . A) (2 . B) (3 . C) (4 . D) (5 . E))
+CL-USER> (let ((l '(1 2 3 4))
+	       (ll '()))
+	   (dotimes (i 5 (nreverse ll))
+	     (push (cons i (car l)) ll)
+	     (pop l)))
+((0 . 1) (1 . 2) (2 . 3) (3 . 4) (4))
+CL-USER> *dico*
+#<HASH-TABLE :TEST EQ :COUNT 2 {10072E7A13}>
+CL-USER> (setf (gethash 'prop *dico*) 6)
+6
+CL-USER> (setf (gethash 'heigth *dico*) 20)
+20
+CL-USER> (with-hash-table-iterator (next *dico*)
+	   (next))
+T
+WEIGHT
+100
+CL-USER> (with-hash-table-iterator (next *dico*)
+	   (do ()
+	       (nil)
+	     (multiple-value-bind (found key value) (next)
+	       (unless found
+		 (return))
+	       (format t "k=~A v=~A~%" key value))))
+k=WEIGHT v=100
+k=HEIGTH v=20
+k=PROP v=6
+
+; in: NEXT
+;     (NEXT)
+; 
+; caught STYLE-WARNING:
+;   undefined function: NEXT
+; 
+; compilation unit finished
+;   Undefined function:
+;     NEXT
+;   caught 1 STYLE-WARNING condition
+ (with-hash-table-iterator (next *dico*)
+	   (do ()
+	       (nil)
+	     (multiple-value-bind (found key value) (next)
+	       (unless found
+		 (return))
+	       (format t "k=~A v=~A~%" key value))))
+k=WEIGHT v=100
+k=HEIGTH v=20
+k=PROP v=6
+NIL
+CL-USER> (block irene 
+	   (print "hello")
+	   (when (> 3 2)
+	     (return-from irene))
+	   (print 'hi))
+
+"hello" 
+NIL
+CL-USER> (block irene 
+	   (print "hello")
+	   (when (< 3 2)
+	     (return-from irene))
+	   (print 'hi))
+
+"hello" 
+HI 
+HI
+CL-USER> (progn 
+	   (print "hello")
+	   (when (< 3 2)
+	     (return-from nil 'au-revoir))
+	   (print 'hi))
+
+"hello" 
+HI 
+; compiling (DEFUN F ...)HI
+CL-USER> (f '(1 2 3 4 5 6)
+	      
+)
+
+FIN
+CL-USER> (f '(1 2 3 nil 5 6))
+; compiling (LET (#) ...)ECHAP
+CL-USER> (ticket)
+
+1
+CL-USER> (ticket)
+; compiling (LET (#) ...)2
+CL-USER> (defparameter *l* (iota 4))
+
+
+
+
+	 
+
+
+; in: DEFPARAMETER *L*
+;     (IOTA 4)
+; 
+; caught STYLE-WARNING:
+;   undefined function: IOTA
+; 
+; compilation unit finished
+;   Undefined function:
+;     IOTA
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION IOTA {100676F183}>.
+; Evaluation aborted on #<UNDEFINED-FUNCTION IOTA {100676F183}>.
+CL-USER> 
+CL-USER> (defparameter *l* '(1 2 3 4))
+
+
+
+
+	 
+
+*L*
+CL-USER> (setf (cdr (last *l*)) *l*)
+; compiling (DEFUN CIRC ...)
+
+; file: /tmp/file6ipphu
+; in: DEFUN CIRC
+;     (NCIRC (COPY-LIST L))
+; 
+; caught STYLE-WARNING:
+;   undefined function: NCIRC
+; 
+; compilation unit finished
+;   Undefined function:
+;     NCIRC
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN NCIRC ...)
+
+; file: /tmp/fileXVoiSm
+; in: DEFUN NCIRC
+;     (L L)
+; 
+; caught STYLE-WARNING:
+;   undefined function: L
+
+;     (NCONS (L L))
+; 
+; caught STYLE-WARNING:
+;   undefined function: NCONS
+; 
+; compilation unit finished
+;   Undefined functions:
+;     L NCONS
+;   caught 2 STYLE-WARNING conditions
+; compiling (DEFUN CIRC ...)
+; compiling (FORMAT T ...)
+; 
+; caught ERROR:
+;   READ error during COMPILE-FILE:
+;   
+;     unmatched close parenthesis
+;   
+;       Line: 1, Column: 17, File-Position: 17
+;   
+;       Stream: #<SB-SYS:FD-STREAM for "file /tmp/filezRZhDs" {1003B71F63}>
+
+
+; file: /tmp/filezRZhDs
+; in: FORMAT T
+;     (FORMAT T "~A" N)
+; 
+; caught WARNING:
+;   undefined variable: N
+; 
+; compilation unit finished
+;   Undefined variable:
+;     N
+;   caught 1 fatal ERROR condition
+;   caught 1 ERROR condition
+;   caught 1 WARNING condition
+; compiling (DEFUN AFFICHE-NUMBER ...); Evaluation aborted on NIL.
+CL-USER> 
+	     

@@ -1,0 +1,189 @@
+; SLIME 2013-06-26
+CL-USER> 45
+45
+CL-USER> 1/2
+1/2
+CL-USER> 3.2
+3.2
+CL-USER> #C(4 5)
+#C(4 5)
+CL-USER> (* 3.2 4.5)
+14.400001
+CL-USER> (/ (abs -5.3) (cos 4.3))
+-13.223586
+CL-USER> (* #C(1 3) #C(2 4))
+#C(-10 10)
+CL-USER> (/ 3/4 4/5)
+15/16
+CL-USER> (- 3/4 4/5)
+-1/20
+CL-USER> #(1 2 3) ;; un vecteur
+#(1 2 3)
+CL-USER> (documentation '+ 'abs)
+WARNING: unsupported DOCUMENTATION: type ABS for object of type SYMBOL
+NIL
+CL-USER> (documentation '+ 'lenght)
+WARNING: unsupported DOCUMENTATION: type LENGHT for object of type SYMBOL
+NIL
+CL-USER> (documentation '+ 'length)
+WARNING: unsupported DOCUMENTATION: type LENGTH for object of type SYMBOL
+; compiling (DEFUN CONG ...)
+
+; file: /tmp/filelOLz3q
+; in: DEFUN CONG
+;     (DEFUN CONG (X) "feuhfkjdshkj")
+; --> PROGN EVAL-WHEN 
+; ==>
+;   (SB-IMPL::%DEFUN 'CONG
+;                    (SB-INT:NAMED-LAMBDA CONG
+;                        (X)
+;                      (BLOCK CONG "feuhfkjdshkj"))
+;                    NIL 'NIL (SB-C:SOURCE-LOCATION))
+; 
+; caught STYLE-WARNING:
+;   The variable X is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 STYLE-WARNING condition
+NIL
+CL-USER> (documentation '+ 'cong)
+WARNING: unsupported DOCUMENTATION: type CONG for object of type SYMBOL
+; compiling (DEFUN MAXIMUM ...)
+
+; file: /tmp/filen1tjyT
+; in: DEFUN MAXIMUM
+;     (MAX L)
+; --> LET VALUES PROG1 LET 
+; ==>
+;   (THE REAL #:ARG01)
+; 
+; caught WARNING:
+;   Derived type of #:ARG01 is
+;     (VALUES LIST &OPTIONAL),
+;   conflicting with its asserted type
+;     REAL.
+;   See also:
+;     The SBCL Manual, Node "Handling of Types"
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+; compiling (DEFUN MAXIMUM ...)NIL
+CL-USER> (documentation 'maximum 'function)
+
+"Retourner le maximum"
+CL-USER> (integerp 145)
+T
+CL-USER> (floatp 245)
+NIL
+CL-USER> (stringp "c'est une chaine de caractere")
+T
+CL-USER> (complexp #C(1 3))
+; compiling (COMPLEXP #C(1 3))
+; compiling (COMPLEXP #C(1 3))
+; compiling (INTEGERP 145)
+; compiling (FLOAT 2496)
+; 
+; caught ERROR:
+;   READ error during COMPILE-FILE:
+;   
+;     end of file on #<SB-SYS:FD-STREAM for "file /tmp/filefdnBKK" {1006479D73}>
+;   
+;     (in form starting at line: 3, column: 13, file-position: 46)
+; 
+; compilation unit finished
+;   caught 1 fatal ERROR condition
+;   caught 1 ERROR condition
+; compiling (DEFUN VALABSOLUE ...)
+
+; file: /tmp/filenHKAkk
+; in: DEFUN VALABSOLUE
+;     (- -X)
+; --> SB-KERNEL:%NEGATE 
+; ==>
+;   (THE NUMBER -X)
+; 
+; caught WARNING:
+;   undefined variable: -X
+; 
+; compilation unit finished
+;   Undefined variable:
+;     -X
+;   caught 1 WARNING condition
+; compiling (DEFUN VALABSOLUE ...)T
+CL-USER> (valAbsolue -8)
+
+; compiling (DEFUN VALABSOLUE ...)
+
+; file: /tmp/filezy4Yis
+; in: DEFUN VALABSOLUE
+;     (-X)
+; 
+; caught STYLE-WARNING:
+;   undefined function: -X
+; 
+; compilation unit finished
+;   Undefined function:
+;     -X
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN VALABSOLUE ...)-8
+CL-USER> (valAbsolue -8)
+
+8
+CL-USER> (valAbsolue 5)
+5
+CL-USER> (moyenne 2 6)
+
+; in: MOYENNE 2
+;     (MOYENNE 2 6)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MOYENNE
+; 
+; compilation unit finished
+;   Undefined function:
+;     MOYENNE
+;   caught 1 STYLE-WARNING condition
+; Evaluation aborted on #<UNDEFINED-FUNCTION MOYENNE {1006DDD8B3}>.
+CL-USER> (moyenne 2 6)
+; compiling (DEFUN MOYENNE ...); Evaluation aborted on #<UNDEFINED-FUNCTION MOYENNE {1006F87E93}>.
+CL-USER> (moyenne 2 6)
+
+4
+CL-USER> (somme 2 6)
+
+; in: SOMME 2
+;     (SOMME 2 6)
+; 
+; caught STYLE-WARNING:
+;   undefined function: SOMME
+; 
+; compilation unit finished
+;   Undefined function:
+;     SOMME
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN SOMME ...); Evaluation aborted on #<UNDEFINED-FUNCTION SOMME {100309AE23}>.
+CL-USER> (somme 2 6)
+
+; compiling (DEFUN FACT ...)
+; compiling (DEFUN FIBO ...)
+
+; file: /tmp/fileUl1R5P
+; in: DEFUN FIBO
+;     (FIBO (1- N) (FIBO (- N 2)))
+; 
+; caught WARNING:
+;   The function was called with two arguments, but wants exactly one.
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+; compiling (DEFUN FIBO ...)20
+CL-USER> (fibo 2)
+
+1
+CL-USER> (fibo 3)
+2
+CL-USER> (fibo 5)
+5
+CL-USER> (fibo 6)
+8
+CL-USER> 

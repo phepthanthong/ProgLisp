@@ -1,0 +1,153 @@
+; SLIME 2013-06-26; compiling (DEFMACRO PI! ...)
+CL-USER> (defparameter *y* 0)
+
+*Y*
+CL-USER> (macroexpand-1 '(pi! *y*))
+(SETQ *Y* PI)
+T
+CL-USER> (pi! *y*)
+3.141592653589793d0
+CL-USER> (defparameter *a* 1)
+*A*
+CL-USER> (defparameter *b* 2)
+*B*
+CL-USER> '(a is *a* and b is *b*)
+(A IS *A* AND B IS *B*)
+CL-USER> `(a is *a* and b is *b*)
+(A IS *A* AND B IS *B*)
+CL-USER> `(a is ,*a* and b is ,*b*) ;; mettre le virgule derriere pour affecter les valeurs
+; compiling (DEFMACRO WHILE ...)
+; compiling (DEFMACRO WHILE ...)(A IS 1 AND B IS 2)
+CL-USER> (macroexpand-1
+	  '(while (> i 3)
+	    (do ()
+		(decf i)
+	      (print i))))
+	  
+
+; compiling (DEFMACRO WHILE ...)
+; compiling (DEFMACRO FOR ...)(DO () ((NOT (> I 3))) ((DO () (DECF I) (PRINT I))))
+T
+CL-USER> (macroexpand-1 '(for (setq *n* 4) (>= *n* 0) (decf *n*) 
+	   (prin1 *n*)))
+
+(PROGN (SETQ *N* 4) (WHILE (>= *N* 0) (PRIN1 *N*) (DECF *N*)))
+T
+CL-USER> (for (setf *n* 4) (>= *n* 0) (decf *n*) 
+	   (prin1 *n*))
+
+; in: FOR (SETQ *N* 4)
+;     (SETQ *N* 4)
+; 
+; caught WARNING:
+;   undefined variable: *N*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *N*
+;   caught 1 WARNING condition
+
+;     (PRIN1 *N*)
+; 
+; caught WARNING:
+;   undefined variable: *N*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *N*
+;   caught 1 WARNING condition
+43210
+; compiling (DEFMACRO WHILE ...)
+; compiling (DEFMACRO FOR ...)NIL
+CL-USER> (for (setf *n* 4) (>= *n* 0) (decf *n*) 
+	   (prin1 *n*))
+
+; in: FOR (SETF *N* 4)
+;     (SETF *N* 4)
+; ==>
+;   (SETQ *N* 4)
+; 
+; caught WARNING:
+;   undefined variable: *N*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *N*
+;   caught 1 WARNING condition
+
+;     (PRIN1 *N*)
+; 
+; caught WARNING:
+;   undefined variable: *N*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *N*
+;   caught 1 WARNING condition
+43210
+NIL
+CL-USER> 
+CL-USER> 
+
+CL-USER> 
+
+CL-USER> (let ((x 10))
+	   (ntimes 5
+		   (incf x))
+	   x)
+
+; compiling (DEFMACRO NTIMES ...)10
+CL-USER> (let ((x 10))
+	   (ntimes 5
+		   (incf x))
+	   x)
+
+15
+CL-USER> (macroexpand-1 '(ntimes 5 (decf v) (format t "*")))
+(DO ((#:G1337 0 (1+ #:G1337))) ((>= #:G1337 5)) (DECF V) (FORMAT T "*"))
+T
+CL-USER> (let ((v 10))
+	   (ntimes 
+	       (decf v)
+	     (format t "*")))
+*****
+NIL
+CL-USER> (let ((v 10))
+	   (ntimes 2
+	       (decf v)
+	     (format t "*")))
+
+CL-USER> (let ((y 10))
+	   (ntimes 2
+	       (decf y)
+	     (format t "*")))
+**
+NIL
+CL-USER> (make-list 20)
+(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL
+ NIL)
+CL-USER> (make-list 20 X)
+; Evaluation aborted on #<UNBOUND-VARIABLE X {1002B7A5D3}>.
+CL-USER> (make-list 20 'X)
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "odd number of &KEY arguments" {1002CD9A43}>.
+CL-USER> (make-list 20 :initial-element 'x)
+(X X X X X X X X X X X X X X X X X X X X)
+CL-USER> (make-list 20 :initial-element '*)
+(* * * * * * * * * * * * * * * * * * * *)
+CL-USER> (cons '* (make-list 20 :initial-element 'x))
+; compiling (DEFMACRO DEFPOWER ...)(* X X X X X X X X X X X X X X X X X X X X)
+CL-USER> (macroexpand-1 '(defpower cube 3))
+
+(DEFUN CUBE (X) (* X X X))
+T
+CL-USER> (defun cube 3)
+; 
+; compilation unit aborted
+;   caught 1 fatal ERROR condition
+; Evaluation aborted on #<TYPE-ERROR expected-type: LIST datum: 3>.
+CL-USER> (defpower cube 3)
+CUBE
+CL-USER> (cube 3)
+; compiling (DEFMACRO DEFPOWER ...)
+; compiling (DEFMACRO DEFPOWER ...)27
+CL-USER> 

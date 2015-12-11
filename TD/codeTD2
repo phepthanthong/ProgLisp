@@ -1,0 +1,161 @@
+; SLIME 2013-06-26; compiling (DEFUN F ...)
+
+; file: /tmp/filex0Dlwn
+; in: DEFUN F
+;     (1)
+; 
+; caught ERROR:
+;   illegal function call
+
+;     (DEFUN F (X) (FUNCALL F (1)))
+; --> PROGN EVAL-WHEN 
+; ==>
+;   (SB-IMPL::%DEFUN 'F
+;                    (SB-INT:NAMED-LAMBDA F
+;                        (X)
+;                      (BLOCK F (FUNCALL F (1))))
+;                    NIL 'NIL (SB-C:SOURCE-LOCATION))
+; 
+; caught STYLE-WARNING:
+;   The variable X is defined but never used.
+
+;     (FUNCALL F (1))
+; --> SB-C::%FUNCALL THE 
+; ==>
+;   (SB-KERNEL:%COERCE-CALLABLE-TO-FUN F)
+; 
+; caught WARNING:
+;   undefined variable: F
+; 
+; compilation unit finished
+;   Undefined variable:
+;     F
+;   caught 1 ERROR condition
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN F ...)
+
+; file: /tmp/fileYjjS2T
+; in: DEFUN F
+;     (DEFUN F (X) (FUNCALL F 1))
+; --> PROGN EVAL-WHEN 
+; ==>
+;   (SB-IMPL::%DEFUN 'F
+;                    (SB-INT:NAMED-LAMBDA F
+;                        (X)
+;                      (BLOCK F (FUNCALL F 1)))
+;                    NIL 'NIL (SB-C:SOURCE-LOCATION))
+; 
+; caught STYLE-WARNING:
+;   The variable X is defined but never used.
+
+;     (FUNCALL F 1)
+; --> SB-C::%FUNCALL THE 
+; ==>
+;   (SB-KERNEL:%COERCE-CALLABLE-TO-FUN F)
+; 
+; caught WARNING:
+;   undefined variable: F
+; 
+; compilation unit finished
+;   Undefined variable:
+;     F
+;   caught 1 WARNING condition
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN F ...)
+; compiling (DEFUN F ...)
+; compiling (DEFUN FX ...)
+CL-USER> (f #'fx)
+
+; compiling (DEFUN SIGMA ...)7.7
+CL-USER> (sigma #'f1 1 3)
+
+; compiling (DEFUN F1 ...)
+; compiling (DEFUN SIGMA ...); Evaluation aborted on #<UNDEFINED-FUNCTION F1 {1005858823}>.
+CL-USER> (sigma #'f1 1 3)
+
+9
+CL-USER> (trace sigma)
+(SIGMA)
+CL-USER> (sigma #'f1 1 3)
+  0: (SIGMA #<FUNCTION F1> 1 3)
+    1: (SIGMA #<FUNCTION F1> 2 3)
+      2: (SIGMA #<FUNCTION F1> 3 3)
+        3: (SIGMA #<FUNCTION F1> 4 3)
+        3: SIGMA returned 0
+      2: SIGMA returned 4
+    1: SIGMA returned 7
+  0: SIGMA returned 9
+; compiling (DEFUN FUNC ...)
+
+; file: /tmp/filekXpf0K
+; in: DEFUN FUNC
+;     (* N (LAMBDA (X) (* X N)))
+; 
+; note: deleting unreachable code
+; 
+; caught WARNING:
+;   Derived type of #'(LAMBDA (X) (* X N)) is
+;     (VALUES FUNCTION &OPTIONAL),
+;   conflicting with its asserted type
+;     NUMBER.
+;   See also:
+;     The SBCL Manual, Node "Handling of Types"
+; 
+; compilation unit finished
+;   caught 1 WARNING condition
+;   printed 1 note
+; compiling (DEFUN (N) ...)
+
+; file: /tmp/fileIGH9D4
+; in: DEFUN (N)
+;     (DEFUN (N) (LAMBDA (X) (* X N)))
+; 
+; caught ERROR:
+;   (during macroexpansion of (DEFUN (N) ...))
+;   not legal as a function name: (N)
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN MUL ...)
+; compiling (DEFUN DOUBLE-ARG ...)
+
+; file: /tmp/fileo6cfcK
+; in: DEFUN DOUBLE-ARG
+;     (SETF (SYMBOL-FUNCTION 'DOUBLER (MUL 2)))
+; 
+; caught ERROR:
+;   during macroexpansion of (SETF #). Use *BREAK-ON-SIGNALS* to intercept.
+;   
+;    odd number of args to SETF
+; 
+; compilation unit finished
+;   caught 1 ERROR condition
+; compiling (DEFUN DOUBLE-ARG ...)9
+CL-USER> (funcall (mul 2) 5)
+
+10
+CL-USER> (function doubler)
+; Evaluation aborted on #<UNDEFINED-FUNCTION DOUBLER {10068597C3}>.
+CL-USER> (doubler 5)
+
+; in: DOUBLER 5
+;     (DOUBLER 5)
+; 
+; caught STYLE-WARNING:
+;   undefined function: DOUBLER
+; 
+; compilation unit finished
+;   Undefined function:
+;     DOUBLER
+;   caught 1 STYLE-WARNING condition
+; compiling (DEFUN MUL ...)
+; compiling (DEFUN DOUBLE-ARG ...); Evaluation aborted on #<UNDEFINED-FUNCTION DOUBLER {10069C6623}>.
+CL-USER> (double-arg)
+
+#<CLOSURE (LAMBDA (X) :IN MUL) {1006CB449B}>
+CL-USER> (doubler)
+; Evaluation aborted on #<SB-INT:SIMPLE-PROGRAM-ERROR "invalid number of arguments: ~S" {1006CF6E43}>.
+CL-USER> (doubler 5)
+10
+CL-USER> 
