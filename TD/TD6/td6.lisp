@@ -45,4 +45,7 @@
     (dotimes (i (+ p 1))
       (setq result (+ result (serie-aux f x i))))
     result))
-  
+ 
+
+
+
